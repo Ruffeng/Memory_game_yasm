@@ -270,6 +270,30 @@ showDigitsP1:
    push rbp
    mov  rbp, rsp
    
+   make_division:
+   mov eax, DWORD[value]
+   mov edx, 0 
+   mov ecx, 10 
+   div ecx ;Quocient -> EAX ; Residu -> EDX
+   
+   manage_tenth:
+   add eax, '0'
+   mov BYTE[charac], al
+   
+   call gotoxyP1
+   call printchP1
+   
+   manage_unit:
+   add edx, '0'
+   mov BYTE[charac], dl
+   
+   increment_colscreen:
+   mov edx, DWORD[colScreen]
+   inc edx
+   mov DWORD[colScreen], edx
+   
+   call gotoxyP1
+   call printchP1
    
    
    mov rsp, rbp
