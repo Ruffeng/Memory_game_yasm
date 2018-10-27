@@ -1,6 +1,6 @@
 section .data               
 ;Canviar Nom i Cognom per les vostres dades.
-developer db "_Nom_ _Cognom1_",0
+developer db "Ruben_Suet_Marcos",0
 
 ;Constants que també estan definides en C.
 ROWDIM  equ 4       ;files de la matriu.
@@ -330,7 +330,55 @@ showDigitsP1:
 updateBoardP1:
    push rbp
    mov  rbp, rsp
+
+   setup:
+   mov esi, 0 ; Value for I  
+   mov edi, 0 ; Value for J 
+   mov ecx, 0 ; Byte to move in the matrix
+   mov DWORD[rowScreen], 10
+    
+   iteration_i:
+   cmp esi, ROWDIM
+   JGE end_iteration_i
+   mov DWORD[colScreen], 12
+    
+   iteration_j:
+   cmp edi, COLDIM
+   JGE end_iteration_j
+    
+   call gotoxyP1 
+   mov dl, [mOpenCards + ecx]
+   inc ecx
+   mov BYTE[charac], dl
+   call printchP1
+
    
+   add DWORD[colScreen], 4
+   inc edi
+
+   jmp iteration_j
+    
+   end_iteration_j:
+    
+   add DWORD[rowScreen], 2
+   mov dil, 0 ; Reset J
+   inc esi
+   jmp iteration_i
+   
+    
+    
+   end_iteration_i:
+   
+   mov DWORD[rowScreen], 19
+   mov DWORD[colScreen], 15
+   mov r8d, DWORD[moves]
+   mov DWORD[value],r8d
+   call showDigitsP1
+   mov BYTE[colScreen], 24
+   mov r9d, DWORD[pairs]
+   mov DWORD[value], r9d
+   call showDigitsP1
+    
    
    
    mov rsp, rbp
