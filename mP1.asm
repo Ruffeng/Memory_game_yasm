@@ -474,9 +474,18 @@ moveCursorP1:
 calcIndexP1:
    push rbp
    mov  rbp, rsp
-
    
-         
+   mov dl, BYTE[rowcol] ; Current row 
+   mov al, COLDIM ; Implicit multiplier
+   
+   mul dl ; Result in AL since it's not a huge number => row*COLDIM 
+   
+   mov cl, BYTE[rowcol + 2] 
+   add al, cl ; (row*COLDIM) + col
+   
+   mov BYTE[indexMat], al
+   
+    
    mov rsp, rbp
    pop rbp
    ret
@@ -503,8 +512,20 @@ calcIndexP1:
 openCardP1:  
    push rbp
    mov  rbp, rsp
-
    
+   call calcIndexP1 ; Get Index with the variable indexMat
+   mov al, BYTE[indexMat]
+   
+
+   cmp BYTE[mCards + eax], 'x'
+   je end_if 
+   mov ecx, DWORD[mCards+eax]
+   mov BYTE[mOpenCards + eax], cl  ;  mOpenCards[i][j] = mCards[i][j];
+   mov BYTE[mCards+eax], 'x' ; mCards[i][j] = 'x';
+   
+   inc BYTE[state]
+   
+   end_if:
          
    mov rsp, rbp
    pop rbp
