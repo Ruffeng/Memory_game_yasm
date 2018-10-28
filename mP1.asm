@@ -408,8 +408,49 @@ moveCursorP1:
    push rbp
    mov  rbp, rsp
 
+   switch:
+   mov al, BYTE[charac]
    
+   cmp al, 'i' ; UP
+   jne case_k
+   
+   cmp WORD[rowcol], 0
+   jle end_if_case_i
+   dec WORD[rowcol]
+   end_if_case_i:   ; More human readable with extra label to follow all steps 
+   
+   
+   
+   case_k:
+   cmp al, 'k'  ; DOWN
+   jne case_j
+   
+   cmp WORD[rowcol], ROWDIM - 1 
+   jge end_if_case_k
+   inc WORD[rowcol]
+   end_if_case_k:
+   
+   
+   case_j:
+   cmp al, 'j' ; LEFT
+   jne case_l
+   
+   cmp WORD[rowcol+2], 0
+   jle end_if_case_j 
+   dec WORD[rowcol+2]
+   end_if_case_j:
+   
+   
+   case_l:
+   cmp al, 'l'
+   jne end_switch
+    
+   cmp WORD[rowcol+2], COLDIM - 1
+   jge end_if_case_l
+   inc WORD[rowcol+2]
+   end_if_case_l:
          
+   end_switch:
    mov rsp, rbp
    pop rbp
    ret
