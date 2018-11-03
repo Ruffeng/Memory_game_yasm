@@ -374,7 +374,7 @@ updateBoardP1:
    mov r8d, DWORD[moves]
    mov DWORD[value],r8d
    call showDigitsP1
-   mov BYTE[colScreen], 24
+   mov DWORD[colScreen], 24
    mov r9d, DWORD[pairs]
    mov DWORD[value], r9d
    call showDigitsP1
@@ -415,20 +415,17 @@ moveCursorP1:
    jne case_k
    
    cmp WORD[rowcol], 0
-   jle end_if_case_i
+   jle end_switch
    dec WORD[rowcol]
-   end_if_case_i:   ; More human readable with extra label to follow all steps 
-   
-   
+    
    
    case_k:
    cmp al, 'k'  ; DOWN
    jne case_j
    
    cmp WORD[rowcol], ROWDIM - 1 
-   jge end_if_case_k
+   jge end_switch
    inc WORD[rowcol]
-   end_if_case_k:
    
    
    case_j:
@@ -436,9 +433,8 @@ moveCursorP1:
    jne case_l
    
    cmp WORD[rowcol+2], 0
-   jle end_if_case_j 
+   jle end_switch 
    dec WORD[rowcol+2]
-   end_if_case_j:
    
    
    case_l:
@@ -446,9 +442,9 @@ moveCursorP1:
    jne end_switch
     
    cmp WORD[rowcol+2], COLDIM - 1
-   jge end_if_case_l
+   jge end_switch
    inc WORD[rowcol+2]
-   end_if_case_l:
+   
          
    end_switch:
    mov rsp, rbp
@@ -523,7 +519,7 @@ openCardP1:
    mov BYTE[mOpenCards + eax], cl  ;  mOpenCards[i][j] = mCards[i][j];
    mov BYTE[mCards+eax], 'x' ; mCards[i][j] = 'x';
    
-   inc BYTE[state]
+   inc DWORD[state]
    
    end_if:
          
