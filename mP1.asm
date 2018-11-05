@@ -471,12 +471,12 @@ calcIndexP1:
    push rbp
    mov  rbp, rsp
    
-   mov dl, BYTE[rowcol] ; Current row 
+   mov edx, DWORD[row] ; Current row 
    mov al, COLDIM ; Implicit multiplier
    
    mul dl ; Result in AL since it's not a huge number => row*COLDIM 
    
-   mov cl, BYTE[rowcol + 2] 
+   mov ecx, DWORD[col] 
    add al, cl ; (row*COLDIM) + col
    
    mov BYTE[indexMat], al
@@ -508,6 +508,12 @@ calcIndexP1:
 openCardP1:  
    push rbp
    mov  rbp, rsp
+   
+   set_variables: 
+   mov r10w, WORD[rowcol]
+   mov r11w, WORD[rowcol + 2]
+   mov DWORD[row], r10d
+   mov DWORD[col], r11d
    
    call calcIndexP1 ; Get Index with the variable indexMat
    mov al, BYTE[indexMat]
